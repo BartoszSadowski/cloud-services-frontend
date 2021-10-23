@@ -17,7 +17,7 @@ jobs:
     - name: Publish
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
-        name: Azure
+        name: Frontend
         username: ${{ secrets.AZURE_USERNAME }}
         password: ${{ secrets.AZURE_PASSWORD }}
         registry: ${{ env.AZURE_REGISTRY }}
