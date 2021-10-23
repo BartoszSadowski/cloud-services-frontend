@@ -1,0 +1,25 @@
+name: deploy
+
+on: 
+  push:
+    branches:
+      - master
+
+env:
+  AZURE_REGISTRY: cloudservicesfrontend.azurecr.io
+  DOCKERFILE_NAME: frontend
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Publish
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: Azure
+        username: ${{ secrets.AZURE_USERNAME }}
+        password: ${{ secrets.AZURE_PASSWORD }}
+        registry: ${{ env.AZURE_REGISTRY }}
+        dockerfile: ${{ env.DOCKERFILE_NAME }}
