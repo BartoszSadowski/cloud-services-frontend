@@ -1,7 +1,76 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
-  <router-view />
+  <q-layout view="hHh Lpr lff" container style="height: 100vh" class="shadow-2">
+    <q-header elevated class="bg-black">
+      <q-toolbar>
+        <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
+        <q-toolbar-title>
+          <q-btn flat :to="{ name: MAIN }">Mail Sender</q-btn>
+        </q-toolbar-title>
+      </q-toolbar>
+    </q-header>
+
+    <q-drawer
+      v-model="drawer"
+      show-if-above
+      :width="200"
+      :breakpoint="500"
+      bordered
+      class="bg-grey-3"
+    >
+      <q-scroll-area class="fit">
+        <q-list>
+          <template v-for="(menuItem, index) in menuList" :key="index">
+            <q-item
+              clickable
+              :active="menuItem.label === 'Outbox'"
+              :to="{ name: menuItem.route }"
+              v-ripple
+            >
+              <q-item-section avatar>
+                <q-icon :name="menuItem.icon" />
+              </q-item-section>
+              <q-item-section>
+                {{ menuItem.label }}
+              </q-item-section>
+            </q-item>
+            <q-separator v-if="menuItem.separator" />
+          </template>
+        </q-list>
+      </q-scroll-area>
+    </q-drawer>
+
+    <q-page-container>
+      <q-page padding>
+        <router-view />
+      </q-page>
+    </q-page-container>
+  </q-layout>
 </template>
+
+<script setup lang="ts">
+import { ref } from "vue";
+import { MAIN, LOGIN, MAIL_LIST } from "@/dicts/routes";
+
+const menuList = [
+  {
+    icon: "login",
+    label: "Login",
+    route: LOGIN,
+    separator: true,
+  },
+  {
+    icon: "forward_to_inbox",
+    label: "Napisz wiadomość",
+    route: MAIN,
+    separator: false,
+  },
+  {
+    icon: "mail",
+    label: "Lista wiadomości",
+    route: MAIL_LIST,
+    separator: false,
+  },
+];
+
+const drawer = ref(false);
+</script>
