@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import { MAIN, MAIL_DETAIL, MAIL_LIST, LOGIN } from "@/dicts/routes";
 import SendMail from "../views/SendMail.vue";
 import Login from "../views/Login.vue";
+import { authenticationStore } from "@/store/authentication";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -31,6 +32,16 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const { isLoggedIn } = authenticationStore.getState();
+
+  if (to.name === LOGIN || isLoggedIn) {
+    return next();
+  }
+
+  next({ name: LOGIN });
 });
 
 export default router;
