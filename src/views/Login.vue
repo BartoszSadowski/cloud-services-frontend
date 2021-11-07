@@ -113,7 +113,7 @@ async function onSubmit() {
   </q-page>
 </template>
 
-<style>
+<style scoped>
 .q-card {
   width: 360px;
 }

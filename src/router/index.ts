@@ -1,26 +1,20 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import { MAIN, MAIL_DETAIL, MAIL_LIST, LOGIN } from "@/dicts/routes";
-import SendMail from "../views/SendMail.vue";
-import Login from "../views/Login.vue";
+import { MAIL_GROUPS, MAIN, LOGIN } from "@/dicts/routes";
+import Login from "@/views/Login.vue";
+import Main from "@/views/Main.vue";
 import { authenticationStore } from "@/store/authentication";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: MAIN,
-    component: SendMail,
+    component: Main,
   },
   {
-    path: "/mails",
-    name: MAIL_LIST,
+    path: "/mail-groups",
+    name: MAIL_GROUPS,
     component: () =>
-      import(/* webpackChunkName: "mailList" */ "../views/MailList.vue"),
-  },
-  {
-    path: "/mails/:id",
-    name: MAIL_DETAIL,
-    component: () =>
-      import(/* webpackChunkName: "mailDetail" */ "../views/MailDetail.vue"),
+      import(/* webpackChunkName: "mailGroups" */ "../views/MailGroups.vue"),
   },
   {
     path: "/login",
@@ -37,7 +31,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const { isLoggedIn } = authenticationStore.getState();
 
-  if (to.name === LOGIN || isLoggedIn) {
+  if ([LOGIN, MAIN].includes(to.name as string) || isLoggedIn) {
     return next();
   }
 

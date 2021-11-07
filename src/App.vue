@@ -49,7 +49,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { MAIN, LOGIN, MAIL_LIST } from "@/dicts/routes";
+import { MAIN, MAIL_GROUPS, LOGIN } from "@/dicts/routes";
 
 const menuList = [
   {
@@ -59,15 +59,14 @@ const menuList = [
     separator: true,
   },
   {
-    icon: "forward_to_inbox",
-    label: "Napisz wiadomość",
+    icon: "home",
+    label: "Strona Główna",
     route: MAIN,
-    separator: false,
   },
   {
-    icon: "mail",
-    label: "Lista wiadomości",
-    route: MAIL_LIST,
+    icon: "forward_to_inbox",
+    label: "Grupy Mailowe",
+    route: MAIL_GROUPS,
     separator: false,
   },
 ];
