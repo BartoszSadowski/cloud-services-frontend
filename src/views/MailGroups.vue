@@ -1,47 +1,25 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { mailGroupListItem } from "@/types/mail-groups";
+import EditMailGroup from "@/components/EditMailGroup";
+
+import { mailGroupItem } from "@/types/mail-groups";
 import { mailGroupsStore } from "@/store/mail-groups";
-
-const columns = [
-  {
-    name: "title",
-    required: true,
-    label: "Nazwa kampani",
-    align: "left",
-    field: (row) => row.title,
-    format: (val) => `${val}`,
-    sortable: true,
-  },
-  {
-    name: "description",
-    label: "Opis",
-    align: "left",
-    field: (row) => row.description,
-    format: (val) => val || "-",
-    sortable: true,
-  },
-  {
-    name: "subject",
-    label: "Tytuł maila",
-    align: "left",
-    field: (row) => row.subject,
-    format: (val) => val || "-",
-    sortable: true,
-  },
-  {
-    name: "actions",
-    align: "center",
-    label: "Akcje",
-  },
-];
-
-const rows: mailGroupListItem[] = await mailGroupsStore.retrieveMailCampaigns();
+import { mailGroupTable } from "@/utils/tables";
 
 const initialPagination = {
   rowsPerPage: 15,
 };
+
 const filter = ref("");
+const loading = ref(true);
+const rows: mailGroupItem[] = ref([]);
+
+mailGroupsStore
+  .retrieveMailCampaigns()
+  .then((mailGroupItems: mailGroupItem[]) => {
+    rows.value = mailGroupItems;
+    loading.value = false;
+  });
 </script>
 
 <template>
@@ -51,8 +29,9 @@ const filter = ref("");
       spac
       title="Grupy Mailowe"
       :rows="rows"
-      :columns="columns"
+      :columns="mailGroupTable"
       :filter="filter"
+      :loading="loading"
       row-key="id"
       :pagination="initialPagination"
     >
@@ -69,15 +48,20 @@ const filter = ref("");
             <q-icon name="search" />
           </template>
         </q-input>
-        <q-btn outline>+</q-btn>
+        <EditMailGroup />
       </template>
 
-      <template #body-cell-actions>
+      <template #body-cell-actions="{ row }">
         <q-td>
-          <q-btn icon="edit" no-caps flat dense />
+          <EditMailGroup
+            :id="row.id"
+            :title="row.title"
+            :description="row.description"
+            :subject="row.subject"
+            :text="row.text"
+          />
         </q-td>
       </template>
     </q-table>
   </q-page>
 </template>
->
