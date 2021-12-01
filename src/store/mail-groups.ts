@@ -2,9 +2,11 @@ import { Notify } from "quasar";
 import { Store } from ".";
 import http from "@/utils/http";
 import { mailGroupItem } from "@/types/mail-groups";
+import { mailItem } from "@/types/mail";
 
 interface MailGroups extends Object {
   mailGroupItems: mailGroupItem[];
+  mails: Record<string, mailItem[]>;
 }
 
 const errorMap: Record<string, string> = {
@@ -16,6 +18,7 @@ class MailGroupsStore extends Store<MailGroups> {
   protected data(): MailGroups {
     return {
       mailGroupItems: [],
+      mails: {},
     };
   }
 
@@ -90,6 +93,24 @@ class MailGroupsStore extends Store<MailGroups> {
       Notify.create({
         type: "negative",
         message: errorMap[error.response.status] || "Nieoczekiwany błąd",
+        position: "top-right",
+      });
+      throw error;
+    }
+  }
+
+  async sendMail(mailCampaign: mailGroupItem) {
+    try {
+      await http.post(`email_campaigns/${mailCampaign.id}/send_mails`);
+      Notify.create({
+        type: "positive",
+        message: "Maile wysłane",
+        position: "top-right",
+      });
+    } catch (error) {
+      Notify.create({
+        type: "negative",
+        message: "Nieoczekiwany błąd",
         position: "top-right",
       });
       throw error;

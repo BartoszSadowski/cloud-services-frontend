@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import EditMailGroup from "@/components/EditMailGroup";
 import RemoveMailGroup from "@/components/RemoveMailGroup";
+import SendMail from "@/components/SendMail";
 
 import { mailGroupItem } from "@/types/mail-groups";
 import { mailGroupsStore } from "@/store/mail-groups";
@@ -55,6 +56,13 @@ mailGroupsStore
       <template #body-cell-actions="{ row }">
         <q-td>
           <EditMailGroup
+            :id="row.id"
+            :title="row.title"
+            :description="row.description"
+            :subject="row.subject"
+            :body="row.body"
+          />
+          <SendMail
             :id="row.id"
             :title="row.title"
             :description="row.description"

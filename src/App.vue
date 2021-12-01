@@ -51,7 +51,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { MAIN, MAIL_GROUPS, LOGIN } from "@/dicts/routes";
+import { MAIN, MAIL_GROUPS, LOGIN, CLIENT_SELECT } from "@/dicts/routes";
 
 const menuList = [
   {
@@ -69,6 +69,12 @@ const menuList = [
     icon: "forward_to_inbox",
     label: "Grupy Mailowe",
     route: MAIL_GROUPS,
+    separator: false,
+  },
+  {
+    icon: "person",
+    label: "Lista klientów",
+    route: CLIENT_SELECT,
     separator: false,
   },
 ];
