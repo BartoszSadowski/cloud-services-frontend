@@ -40,18 +40,8 @@ async function remove() {
       </q-card-section>
       <q-card-actions>
         <q-space />
-        <q-btn
-          flat
-          color="negative"
-          label="usuń"
-          @click="remove"
-        />
-        <q-btn
-          flat
-          color="dark"
-          label="anuluj"
-          @click="isOpen=false"
-        />
+        <q-btn flat color="negative" label="usuń" @click="remove" />
+        <q-btn flat color="dark" label="anuluj" @click="isOpen = false" />
       </q-card-actions>
 
       <q-inner-loading :showing="isLoading">
