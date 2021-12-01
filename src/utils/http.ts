@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "https://cloud-services-backend.azurewebsites.net",
+  baseURL: "https://cloud-service-backend.azurewebsites.net",
 });

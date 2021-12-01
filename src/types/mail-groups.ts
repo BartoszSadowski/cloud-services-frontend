@@ -3,5 +3,7 @@ export type mailGroupItem = {
   title: string;
   description?: string;
   subject?: string;
-  text?: string;
+  body?: string;
+  created_at?: string;
+  updated_at?: string;
 };

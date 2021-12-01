@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref, defineProps } from "vue";
 import { mailGroupsStore } from "@/store/mail-groups";
+import Editor from "@/components/Editor";
 
 const props = defineProps({
   id: String,
   title: String,
   description: String,
   subject: String,
-  text: String,
+  body: String,
 });
 
 const mailObjectFactory = () => ({
@@ -15,7 +16,7 @@ const mailObjectFactory = () => ({
   title: props.title || "",
   description: props.description || "",
   subject: props.subject || "",
-  text: props.text || "",
+  body: props.body || "",
 });
 
 const mailObject = ref(mailObjectFactory());
@@ -24,10 +25,6 @@ const isOpen = ref(false);
 function open() {
   isOpen.value = true;
 }
-
-const isEditorFocused = ref(false);
-const focusEditor = () => (isEditorFocused.value = true);
-const blurEditor = () => (isEditorFocused.value = false);
 
 const isLoading = ref(false);
 async function save() {
@@ -39,7 +36,7 @@ async function save() {
     isOpen.value = false;
     mailObject.value = mailObjectFactory();
   } catch (err) {
-    console.error(err);
+    console.log(err);
   } finally {
     isLoading.value = false;
   }
@@ -63,21 +60,7 @@ async function save() {
         <q-input v-model="mailObject.subject" label="Tytuł maila" />
       </q-card-section>
 
-      <q-card-section class="row items-center">
-        <p
-          class="edit-mail-popup__label"
-          :class="{ 'edit-mail-popup__label--focus': isEditorFocused }"
-        >
-          Treść maila
-        </p>
-        <q-editor
-          v-model="mailObject.text"
-          label="Label"
-          class="edit-mail-popup__editor"
-          @focus="focusEditor"
-          @blur="blurEditor"
-        />
-      </q-card-section>
+      <Editor v-model="mailObject.body" />
 
       <q-card-actions>
         <q-space />
@@ -97,25 +80,8 @@ async function save() {
 </template>
 
 <style scoped lang="scss">
-@import "@/styles/quasar.variables.scss";
-
 .edit-mail-popup {
   width: 900px;
   max-width: 80vw;
-
-  &__editor {
-    width: 100%;
-    min-height: 10rem;
-  }
-
-  &__label {
-    color: #767676;
-    font-size: 16px;
-    margin: 0 0 8px;
-
-    &--focus {
-      color: $primary;
-    }
-  }
 }
 </style>

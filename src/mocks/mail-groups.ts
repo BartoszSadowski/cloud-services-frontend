@@ -6,12 +6,19 @@ const mockMailGroups: mailGroupItem[] = [
     title: "Przykładowa kampania",
     description: "Opis kampani tu jest",
     subject: "Tytuł maila",
-    text: "Przykładowy text",
+    body: "Przykładowy text",
   },
   {
     id: "456",
     title: "Inna kampania",
-    text: "Inny tekst",
+    body: "Inny tekst",
+  },
+  {
+    id: "de6712a1-11fc-4b87-be7b-d03f3bbf737b",
+    title: "Welcome campaign",
+    description: "Campaiagn to welcome customers",
+    subject: "Welcome",
+    body: "Hello {{var:name}}, {{var:surname}}. We would like to welcome you!",
   },
 ];
 

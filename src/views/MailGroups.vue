@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import EditMailGroup from "@/components/EditMailGroup";
+import RemoveMailGroup from "@/components/RemoveMailGroup";
 
 import { mailGroupItem } from "@/types/mail-groups";
 import { mailGroupsStore } from "@/store/mail-groups";
@@ -58,7 +59,14 @@ mailGroupsStore
             :title="row.title"
             :description="row.description"
             :subject="row.subject"
-            :text="row.text"
+            :body="row.body"
+          />
+          <RemoveMailGroup
+            :id="row.id"
+            :title="row.title"
+            :description="row.description"
+            :subject="row.subject"
+            :body="row.body"
           />
         </q-td>
       </template>
