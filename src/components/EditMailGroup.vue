@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, defineProps } from "vue";
+import { useQuasar } from "quasar";
 import { mailGroupsStore } from "@/store/mail-groups";
 
 const props = defineProps({
@@ -7,7 +8,7 @@ const props = defineProps({
   title: String,
   description: String,
   subject: String,
-  text: String,
+  body: String,
 });
 
 const mailObjectFactory = () => ({
@@ -15,7 +16,7 @@ const mailObjectFactory = () => ({
   title: props.title || "",
   description: props.description || "",
   subject: props.subject || "",
-  text: props.text || "",
+  body: props.body || "",
 });
 
 const mailObject = ref(mailObjectFactory());
@@ -39,7 +40,7 @@ async function save() {
     isOpen.value = false;
     mailObject.value = mailObjectFactory();
   } catch (err) {
-    console.error(err);
+    console.log(err)
   } finally {
     isLoading.value = false;
   }
@@ -71,7 +72,7 @@ async function save() {
           Treść maila
         </p>
         <q-editor
-          v-model="mailObject.text"
+          v-model="mailObject.body"
           label="Label"
           class="edit-mail-popup__editor"
           @focus="focusEditor"
