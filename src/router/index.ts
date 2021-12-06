@@ -3,12 +3,13 @@ import {
   MAIL_GROUPS,
   MAIN,
   LOGIN,
+  LOGOUT,
   CLIENT_SELECT,
   CLIENTS,
 } from "@/dicts/routes";
 import Login from "@/views/Login.vue";
 import Main from "@/views/Main.vue";
-// import { authenticationStore } from "@/store/authentication";
+import { authenticationStore } from "@/store/authentication";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -39,6 +40,11 @@ const routes: Array<RouteRecordRaw> = [
     name: LOGIN,
     component: Login,
   },
+  {
+    path: "/logout",
+    name: LOGOUT,
+    component: Login,
+  },
 ];
 
 const router = createRouter({
@@ -46,14 +52,18 @@ const router = createRouter({
   routes,
 });
 
-// router.beforeEach((to, from, next) => {
-//   const { isLoggedIn } = authenticationStore.getState();
+router.beforeEach((to, from, next) => {
+  if (to.name === LOGOUT) {
+    authenticationStore.clearToken();
+  }
 
-//   if ([LOGIN, MAIN].includes(to.name as string) || isLoggedIn) {
-//     return next();
-//   }
+  const { token } = authenticationStore.getState();
 
-//   next({ name: LOGIN });
-// });
+  if ([LOGIN, MAIN].includes(to.name as string) || token) {
+    return next();
+  }
+
+  next({ name: LOGIN });
+});
 
 export default router;

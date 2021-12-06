@@ -3,8 +3,8 @@ import { ref, defineProps } from "vue";
 import { clientStore } from "@/store/clients";
 
 const props = defineProps({
-    id: String
-})
+  id: String,
+});
 
 const clientObjectFactory = () => ({
   email: "",
@@ -53,12 +53,7 @@ async function save() {
 
       <q-card-actions>
         <q-space />
-        <q-btn
-          flat
-          color="primary"
-          label="Zapisz"
-          @click="save"
-        />
+        <q-btn flat color="primary" label="Zapisz" @click="save" />
       </q-card-actions>
 
       <q-inner-loading :showing="isLoading">

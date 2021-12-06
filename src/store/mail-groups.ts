@@ -10,6 +10,7 @@ interface MailGroups extends Object {
 }
 
 const errorMap: Record<string, string> = {
+  401: "Sesja wygasła",
   404: "Serwer nieosiągalny",
   422: " Źle uzupełnione dane",
 };

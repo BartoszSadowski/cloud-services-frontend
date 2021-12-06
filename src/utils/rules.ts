@@ -16,9 +16,9 @@ export function isEmail(
 
 export function isValidPassword(
   value: string,
-  message = "Hasło musi składać się z conajmniej 8 znaków."
+  message = "Hasło musi składać się z conajmniej 6 znaków."
 ): validationFunction {
-  return (value) => value.length >= 8 || message;
+  return (value) => value.length >= 6 || message;
 }
 
 export function isSame(
