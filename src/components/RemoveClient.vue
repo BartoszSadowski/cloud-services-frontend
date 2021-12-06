@@ -4,9 +4,9 @@ import { clientStore } from "@/store/clients";
 import { clientItem } from "@/types/clients";
 
 const props = defineProps({
-    id: String,
-    client: clientItem
-})
+  id: String,
+  client: clientItem,
+});
 
 const isOpen = ref(false);
 function open() {

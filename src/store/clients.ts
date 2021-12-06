@@ -10,16 +10,17 @@ interface Clients extends Object {
 }
 
 const errorMap: Record<string, string> = {
+  401: "Sesja wygasła",
   404: "Serwer nieosiągalny",
-  422: " Źle uzupełnione dane",
+  422: "Źle uzupełnione dane",
 };
 
 class ClientStore extends Store<Clients> {
   protected data(): Clients {
-      return {
-        clientItems: {},
-        sent: {}
-      };
+    return {
+      clientItems: {},
+      sent: {},
+    };
   }
 
   async retrieveClients(id: string) {
@@ -27,14 +28,17 @@ class ClientStore extends Store<Clients> {
       return;
     }
 
-    if (this.state?.clientItems?.[id]?.length && this.state?.clientItems?.[id]?.length !== 0) {
+    if (
+      this.state?.clientItems?.[id]?.length &&
+      this.state?.clientItems?.[id]?.length !== 0
+    ) {
       return this.state.clientItems[id];
     }
 
     const clients: clientItem[] = (await http
       .get(`email_campaigns/${id}/clients`)
       .then((val) => val.data)) as clientItem[];
-      this.state.clientItems[id] = clients;
+    this.state.clientItems[id] = clients;
     return clients;
   }
 
@@ -44,8 +48,8 @@ class ClientStore extends Store<Clients> {
         .post(`email_campaigns/${id}/add_client`, { client })
         .then((res) => res.data)) as clientItem;
 
-        this.state.clientItems[id].push(result);
-        return result;
+      this.state.clientItems[id].push(result);
+      return result;
     } catch (error: any) {
       Notify.create({
         type: "negative",
@@ -80,7 +84,7 @@ class ClientStore extends Store<Clients> {
   }
 
   async retrieveMails(id: string): Promise<string[]> {
-   return http
+    return http
       .get(`email_campaigns/${id}/mails`)
       .then((val) => val.data.map((el: mailItem) => el.client_id));
   }

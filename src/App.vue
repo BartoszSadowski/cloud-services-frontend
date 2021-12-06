@@ -21,6 +21,7 @@
         <q-list>
           <template v-for="(menuItem, index) in menuList" :key="index">
             <q-item
+              v-if="menuItem.show()"
               clickable
               :active="menuItem.label === 'Outbox'"
               :to="{ name: menuItem.route }"
@@ -51,7 +52,14 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { MAIN, MAIL_GROUPS, LOGIN, CLIENT_SELECT } from "@/dicts/routes";
+import {
+  MAIN,
+  MAIL_GROUPS,
+  LOGIN,
+  CLIENT_SELECT,
+  LOGOUT,
+} from "@/dicts/routes";
+import { authenticationStore } from "./store/authentication";
 
 const menuList = [
   {
@@ -59,23 +67,34 @@ const menuList = [
     label: "Login",
     route: LOGIN,
     separator: true,
+    show: () => !authenticationStore.getState().token,
+  },
+  {
+    icon: "logout",
+    label: "Logout",
+    route: LOGOUT,
+    separator: true,
+    show: () => !!authenticationStore.getState().token,
   },
   {
     icon: "home",
     label: "Strona Główna",
     route: MAIN,
+    show: () => !!authenticationStore.getState().token,
   },
   {
     icon: "forward_to_inbox",
     label: "Grupy Mailowe",
     route: MAIL_GROUPS,
     separator: false,
+    show: () => !!authenticationStore.getState().token,
   },
   {
     icon: "person",
     label: "Lista klientów",
     route: CLIENT_SELECT,
     separator: false,
+    show: () => !!authenticationStore.getState().token,
   },
 ];
 

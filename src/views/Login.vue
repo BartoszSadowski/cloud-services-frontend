@@ -14,9 +14,9 @@ const credentialsBoilerplate = {
 const router = useRouter();
 
 (function onBeforeRouteEnter() {
-  const { isLoggedIn } = authenticationStore.getState();
+  const { token } = authenticationStore.getState();
 
-  if (isLoggedIn) {
+  if (token) {
     router.push({ name: MAIN });
   }
 })();
@@ -38,7 +38,9 @@ async function onSubmit() {
 
   const { email, password } = credentials.value;
 
-  authenticationStore.authenticate(email, password).then((isAuthenticated) => {
+  const method = isRegister.value ? "register" : "authenticate";
+
+  authenticationStore[method](email, password).then((isAuthenticated) => {
     if (isAuthenticated) {
       router.push({ name: MAIN });
     }
@@ -65,7 +67,10 @@ async function onSubmit() {
               v-model="credentials.password"
               type="password"
               label="hasło"
-              :rules="[rules.isEmpty(), rules.isValidPassword()]"
+              :rules="[
+                rules.isEmpty(),
+                rules.isValidPassword(credentials.password),
+              ]"
               square
               filled
               clearable
@@ -85,7 +90,7 @@ async function onSubmit() {
         <q-card-actions class="q-px-md">
           <q-btn
             class="full-width"
-            label="Login"
+            :label="isRegister ? 'Zarejestruj' : 'Zaloguj'"
             unelevated
             color="primary"
             size="lg"
